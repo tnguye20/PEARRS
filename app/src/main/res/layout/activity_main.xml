@@ -10,8 +10,7 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
-    tools:context="tnguye20.pearrs.LoginActivity"
-    android:background="#fcf4e8">
+    tools:context="tnguye20.pearrs.LoginActivity">
 
     <ImageView
         android:layout_width="match_parent"

@@ -5,8 +5,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -26,8 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText mPass2;
     private EditText mDoctorCode;
     private Button mRegisterButton;
-
-    private TextView mAlert;
+    private Spinner mGenderSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +37,19 @@ public class RegisterActivity extends AppCompatActivity {
 
         mFirstName = (EditText)findViewById(R.id.firstNameEditText);
         mLastName = (EditText)findViewById(R.id.lastNameEditText);
+        mGenderSpinner = (Spinner)findViewById(R.id.genderSpiner);
         mUserName = (EditText)findViewById(R.id.userNameEditText);
         mPass = (EditText)findViewById(R.id.passEditText);
         mPass2 = (EditText)findViewById(R.id.pass2EditText);
         mDoctorCode = (EditText)findViewById(R.id.doctorEditText);
         mRegisterButton = (Button)findViewById(R.id.registerButton);
 
-        mAlert = (TextView)findViewById(R.id.alertTextView);
+        // Create an Array Adapter using the string array in the String Resource and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.genderSpinner_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appear
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        mGenderSpinner.setAdapter(adapter);
 
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,6 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
                 // Get values from View
                 final String firstName = mFirstName.getText().toString();
                 final String lastName = mLastName.getText().toString();
+                final String gender = mGenderSpinner.getSelectedItem().toString();
                 final String userName = mUserName.getText().toString();
                 final String password = mPass.getText().toString();
                 final String password2 = mPass2.getText().toString();
@@ -63,12 +71,9 @@ public class RegisterActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
-
                             if(success){
                                 Intent loginIntent = new Intent(RegisterActivity.this, LoginActivity.class);
                                 RegisterActivity.this.startActivity(loginIntent);
-                            } else {
-                                mAlert.setText(jsonResponse.getString("password"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -76,7 +81,7 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 };
 
-                RegisterRequest registerRequest = new RegisterRequest(firstName, lastName, userName, password, password2, doctorCode, responseListener);
+                RegisterRequest registerRequest = new RegisterRequest(firstName, lastName, gender, userName, password, password2, doctorCode, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
                 queue.add(registerRequest);
             }

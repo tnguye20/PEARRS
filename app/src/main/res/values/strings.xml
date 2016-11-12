@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">PEARRS</string>
+
+    <string-array name="genderSpinner_array">
+        <item>Select your gender</item>
+        <item>M</item>
+        <item>F</item>
+    </string-array>
 </resources>

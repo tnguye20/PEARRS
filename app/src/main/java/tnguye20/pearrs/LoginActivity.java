@@ -8,8 +8,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
@@ -48,22 +50,40 @@ public class LoginActivity extends AppCompatActivity {
                 final String userName = mUserName.getText().toString();
                 final String password = mPass.getText().toString();
 
-                Intent welcomeIntent = new Intent(LoginActivity.this, WelcomeActivity.class);
-                welcomeIntent.putExtra("firstName", "Thang");
-                LoginActivity.this.startActivity(welcomeIntent);
-
-
-                Response.Listener<String> responseListener = new Response.Listener<String>(){
+                final Response.Listener<String> responseListener = new Response.Listener<String>(){
 
                     @Override
                     public void onResponse(String response) {
                         try {
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
+                            if(success) {
+                                final int userId = jsonResponse.getInt("userId");
+                                final String firstName = jsonResponse.getString("firstName");
+                                final String gender = jsonResponse.getString("gender");
+                                final String nextSurvey = jsonResponse.getString("nextSurvey");
+                                final String surveyQuestions = jsonResponse.getString("surveyQuestions");
 
-                            //if(success) {
-
-                            //}
+                                if(nextSurvey.equals("1")) {
+                                    /* This means they are a new user, take them to the welcome screen */
+                                    Intent welcomeIntent = new Intent(LoginActivity.this, WelcomeActivity.class);
+                                    welcomeIntent.putExtra("userId", userId);
+                                    welcomeIntent.putExtra("firstName", firstName);
+                                    welcomeIntent.putExtra("gender", gender);
+                                    welcomeIntent.putExtra("nextSurvey", nextSurvey);
+                                    welcomeIntent.putExtra("surveyQuestions", surveyQuestions);
+                                    LoginActivity.this.startActivity(welcomeIntent);
+                                }else{
+                                    /* Existing user, take the survey right away */
+                                    Intent surveyIntent = new Intent(LoginActivity.this, SurveyActivity.class);
+                                    surveyIntent.putExtra("userId", userId);
+                                    surveyIntent.putExtra("firstName", firstName);
+                                    surveyIntent.putExtra("gender", gender);
+                                    surveyIntent.putExtra("nextSurvey", nextSurvey);
+                                    surveyIntent.putExtra("surveyQuestions", surveyQuestions);
+                                    LoginActivity.this.startActivity(surveyIntent);
+                                }
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
