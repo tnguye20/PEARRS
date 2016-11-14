@@ -14,6 +14,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private int userId;
     private String firstName;
     private String gender;
+    private String nextSurvey;
     private String surveyQuestions;
     private String displayString;
 
@@ -31,6 +32,7 @@ public class WelcomeActivity extends AppCompatActivity {
             userId = intent.getIntExtra("userId", 0);
             firstName = intent.getStringExtra("firstName");
             gender = intent.getStringExtra("gender");
+            nextSurvey = intent.getStringExtra("nextSurvey");
             surveyQuestions = intent.getStringExtra("surveyQuestions");
         }
 
@@ -55,6 +57,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 Intent surveyIntent = new Intent(WelcomeActivity.this, SurveyActivity.class);
                 surveyIntent.putExtra("userId", userId);
                 surveyIntent.putExtra("firstName", firstName);
+                surveyIntent.putExtra("nextSurvey", nextSurvey);
                 surveyIntent.putExtra("surveyQuestions", surveyQuestions);
                 WelcomeActivity.this.startActivity(surveyIntent);
             }

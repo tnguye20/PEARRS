@@ -58,7 +58,7 @@ public class RegisterActivity extends AppCompatActivity {
                 final String firstName = mFirstName.getText().toString();
                 final String lastName = mLastName.getText().toString();
                 final String gender = mGenderSpinner.getSelectedItem().toString();
-                final String userName = mUserName.getText().toString();
+                final String userName = mUserName.getText().toString().toLowerCase(); // Take Lower case only
                 final String password = mPass.getText().toString();
                 final String password2 = mPass2.getText().toString();
                 final String doctorCode = mDoctorCode.getText().toString();

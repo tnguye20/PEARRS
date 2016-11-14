@@ -12,13 +12,44 @@
     tools:context="tnguye20.pearrs.ThankActivity">
 
     <TextView
-        android:text="It Works. Fuck Yes :3"
+        android:text="Thank you for answering the survey. Would you wan to share your responses with your doctor?"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:id="@+id/textView"
         android:textAlignment="center"
-        android:textSize="36sp"/>
+        android:textSize="22sp"
+        android:layout_marginTop="204dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginStart="7dp"
+        android:id="@+id/doctorRadioGroup">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yes"
+            android:id="@+id/Yes"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textSize="22sp"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No"
+            android:id="@+id/No"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textSize="22sp"
+            />
+    </RadioGroup>
 </RelativeLayout>

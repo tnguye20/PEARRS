@@ -37,4 +37,16 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/proceedButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/errorTextView"
+        android:textSize="20sp"
+        android:textColor="@android:color/holo_red_dark"
+        android:textAlignment="center"/>
+
 </RelativeLayout>

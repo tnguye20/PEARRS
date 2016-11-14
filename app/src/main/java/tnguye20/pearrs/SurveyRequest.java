@@ -19,13 +19,16 @@ public class SurveyRequest extends StringRequest{
     private static final String SURVEY_REQUEST_URL = "http://tnguye20.w3.uvm.edu/pearrs/survey.php";
     private Map<String,String> params;
 
-    public SurveyRequest(String nextSurvey, Response.Listener<String> listener){
+    public SurveyRequest(String nextSurvey, String surveyId, String userId, String results ,Response.Listener<String> listener){
 
         // NOTICE: LAST PARAM IS USED TO HANDLE ERRORS, LEAVE BLANK FOR NOW
         super(Method.POST,SURVEY_REQUEST_URL,listener, null);
 
         params = new HashMap<>();
         params.put("nextSurvey", nextSurvey);
+        params.put("surveyId", surveyId);
+        params.put("userId", userId);
+        params.put("results", results);
     }
 
     @Override

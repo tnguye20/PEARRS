@@ -47,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mLoginButton.setText("Verifying...");
                 final String userName = mUserName.getText().toString();
                 final String password = mPass.getText().toString();
 
