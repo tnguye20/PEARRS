@@ -40,7 +40,7 @@ public class WelcomeActivity extends AppCompatActivity {
         if(gender.equals("M")){
             displayString = "Hello, Mr. ";
         }else{
-            displayString = "Hello, Mrs. ";
+            displayString = "Hello, Ms. ";
         }
 
         displayString += firstName + "! Thank you for downloading the PEARRS app. Let's get started!\n";
@@ -54,12 +54,17 @@ public class WelcomeActivity extends AppCompatActivity {
         mProceedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent surveyIntent = new Intent(WelcomeActivity.this, SurveyActivity.class);
-                surveyIntent.putExtra("userId", userId);
-                surveyIntent.putExtra("firstName", firstName);
-                surveyIntent.putExtra("nextSurvey", nextSurvey);
-                surveyIntent.putExtra("surveyQuestions", surveyQuestions);
-                WelcomeActivity.this.startActivity(surveyIntent);
+                Intent newIntent;
+                if(nextSurvey.equals("1")) {
+                    newIntent = new Intent(WelcomeActivity.this, IntroductionActivity.class);
+                }else{
+                    newIntent = new Intent(WelcomeActivity.this, SurveyActivity.class);
+                }
+                newIntent.putExtra("userId", userId);
+                newIntent.putExtra("firstName", firstName);
+                newIntent.putExtra("nextSurvey", nextSurvey);
+                newIntent.putExtra("surveyQuestions", surveyQuestions);
+                WelcomeActivity.this.startActivity(newIntent);
             }
         });
     }
