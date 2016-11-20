@@ -5,9 +5,12 @@ import android.support.annotation.IntegerRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,10 +33,14 @@ import java.util.Iterator;
 public class SurveyActivity extends AppCompatActivity {
     private static final String SURVEY_REQUEST_URL = "http://tnguye20.w3.uvm.edu/pearrs/survey.php";
     private Button mProceedButton;
+    private TextView mIntro;
     private RadioGroup mRadioGroup;
+    private TextView mTextAnswer;
     private TextView mQuestion;
     private TextView mError;
     private RadioButton radioButton;
+    private RelativeLayout mRelativeLayout;
+    RelativeLayout.LayoutParams layoutParams;
 
     /* GLOBAL VARIABLES FOR THE ENTIRE SURVEY */
     private int userId;
@@ -74,10 +81,16 @@ public class SurveyActivity extends AppCompatActivity {
         }
 
         /* Get all the views */
+        mRelativeLayout = (RelativeLayout)findViewById(R.id.activity_survey);
         mProceedButton = (Button) findViewById(R.id.proceedButton);
-        mRadioGroup = (RadioGroup) findViewById(R.id.myRadioGroup);
         mQuestion = (TextView) findViewById(R.id.questionTextView);
         mError = (TextView) findViewById(R.id.errorTextView);
+        mIntro = (TextView)findViewById(R.id.introTextView);
+        mIntro.setText(intent.getStringExtra("intro"));
+
+        /* Get the params for the layout */
+        layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.addRule(RelativeLayout.BELOW, R.id.questionTextView);
 
         /* Begin the recursive process of displaying the survey */
         try {
@@ -114,197 +127,263 @@ public class SurveyActivity extends AppCompatActivity {
                 mProceedButton.setText("Submit Survey");
             }
 
-            /* Create all the radio button(s) for the question dynamically */
-            answers = new JSONObject(question.getString("fldAnswers"));
+            if(type.equals("Text")){
+                mTextAnswer = new EditText(SurveyActivity.this);
+                mRelativeLayout.addView(mTextAnswer, layoutParams);
+            }else if(type.equals("Radio")) {
+                /* Create all the radio button(s) for the question dynamically */
+                mRadioGroup = new RadioGroup(SurveyActivity.this);
+                mRadioGroup.setOrientation(RadioGroup.VERTICAL);
 
-            Iterator<String> iterator = answers.keys();
+                answers = new JSONObject(question.getString("fldAnswers"));
 
-            while(iterator.hasNext()){
-                String key = (String)iterator.next();
-                String temp2 = answers.getString(key);
-                JSONObject answer = new JSONObject(temp2);
-                String answerText = answer.getString("text");
-                int answerValue = answer.getInt("value");
+                Iterator<String> iterator = answers.keys();
 
-                radioButton = new RadioButton(SurveyActivity.this);
-                radioButton.setId(answerValue);
-                radioButton.setText(answerText);
-                mRadioGroup.addView(radioButton);
+                while (iterator.hasNext()) {
+                    String key = (String) iterator.next();
+                    String temp2 = answers.getString(key);
+                    JSONObject answer = new JSONObject(temp2);
+                    String answerText = answer.getString("text");
+                    int answerValue = answer.getInt("value");
+
+                    radioButton = new RadioButton(SurveyActivity.this);
+                    radioButton.setId(answerValue);
+                    radioButton.setText(answerText);
+                    mRadioGroup.addView(radioButton);
+                }
+                mRelativeLayout.addView(mRadioGroup, layoutParams);
             }
 
             // Set the Proceed Button to go to the next question
             mProceedButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // Get rid of the intro text
+                    //mIntro.setText("");
+
                     boolean proceed = true;
-                    if(mRadioGroup.getCheckedRadioButtonId() == -1){
-                        // This means they haven't clicked anything yet
-                        mError.setText("Please choose an answer before proceeding.");
+                    if(type.equals("Radio")){
+                        if(mRadioGroup.getCheckedRadioButtonId() == -1) {
+                            // This means they haven't clicked anything yet
+                            proceed = false;
+                        }
+                    }else if(type.equals("Text")){
+                        if(mTextAnswer.getText().toString().equals("")){
+                            proceed = false;
+                        }
                     }
                     if(proceed){
-                        // Get value of the checked radio button and add to total score
-                        int checkedValue = mRadioGroup.getCheckedRadioButtonId();
-                        total += checkedValue;
-                        tempAnswerList.add(checkedValue);
+                        if(type.equals("Radio")) {
+                            // Get value of the checked radio button and add to total score
+                            int checkedValue = mRadioGroup.getCheckedRadioButtonId();
+                            total += checkedValue;
+                            tempAnswerList.add(checkedValue);
 
-                        // Save the answer to the JSON file
-                        JSONObject questionResult = new JSONObject();
-                        try{
-                            questionResult.put("pmkQuestionId", questionId);
-                            questionResult.put("fnkSurveyId", surveyId);
-                            questionResult.put("fldQuestion", questionText);
-                            // Get the actual text of the answer
-                            String radioText =  ((RadioButton)mRadioGroup.findViewById(checkedValue)).getText().toString();
-                            questionResult.put("fldAnswerText", radioText);
-                            questionResult.put("fldAnswerValue", checkedValue);
+                            // Save the answer to the JSON file
+                            JSONObject questionResult = new JSONObject();
+                            try {
+                                questionResult.put("pmkQuestionId", questionId);
+                                questionResult.put("fnkSurveyId", surveyId);
+                                questionResult.put("fldQuestion", questionText);
+                                // Get the actual text of the answer
+                                String radioText = ((RadioButton) mRadioGroup.findViewById(checkedValue)).getText().toString();
+                                questionResult.put("fldAnswerText", radioText);
+                                questionResult.put("fldAnswerValue", checkedValue);
 
-                            // Put this object into an JSONArray
-                            questionResults.put(questionResult);
-                        } catch(JSONException e){
-                            e.printStackTrace();
-                        }
-
-                        if (nextIndex >= surveyQuestionsLength) {
-                            // Put JSONArray of answers into the result JSONObject and send to server
-                            try{
-                                results.put("questions", questionResults);
-                                results.put("totalScore", total);
-                            }catch(JSONException e){
+                                // Put this object into an JSONArray
+                                questionResults.put(questionResult);
+                            } catch (JSONException e) {
                                 e.printStackTrace();
                             }
 
-                            final Response.Listener<String> responseListener = new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    Intent thankIntent = new Intent(SurveyActivity.this, ThankActivity.class);
-                                    SurveyActivity.this.startActivity(thankIntent);
+                            if (nextIndex >= surveyQuestionsLength) {
+                                // Put JSONArray of answers into the result JSONObject and send to server
+                                try {
+                                    results.put("questions", questionResults);
+                                    results.put("totalScore", total);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            };
 
-                            SurveyRequest surveyRequest = new SurveyRequest(nextSurvey, surveyId, Integer.toString(userId), results.toString(), responseListener);
-                            RequestQueue queue = Volley.newRequestQueue(SurveyActivity.this);
-                            queue.add(surveyRequest);
+                                final Response.Listener<String> responseListener = new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        Intent thankIntent = new Intent(SurveyActivity.this, ThankActivity.class);
+                                        SurveyActivity.this.startActivity(thankIntent);
+                                    }
+                                };
 
-                        } else {
-                            try{
-                                /* Perform check to see if there is branching logic */
-                                branchValues = new JSONObject(question.getString("fldBranchValues"));
-                                int branchValue = branchValues.getInt("branchValue");
+                                SurveyRequest surveyRequest = new SurveyRequest(nextSurvey, surveyId, Integer.toString(userId), results.toString(), responseListener);
+                                RequestQueue queue = Volley.newRequestQueue(SurveyActivity.this);
+                                queue.add(surveyRequest);
 
-                                /* This checks if the value is to be compared with the total score or the current question's score */
-                                boolean isTotal = branchValues.getBoolean("isTotal");
+                            } else {
+                                try {
+                                    /* Perform check to see if there is branching logic */
+                                    branchValues = new JSONObject(question.getString("fldBranchValues"));
+                                    int branchValue = branchValues.getInt("branchValue");
 
-                                boolean extraCondition = false; // Assume the second condition is always false
+                                    /* This checks if the value is to be compared with the total score or the current question's score */
+                                    boolean isTotal = branchValues.getBoolean("isTotal");
 
-                                if(!branchValues.isNull("extraCondition")) {
-                                    /* This get the extra condition(s) for the survey to branch */
-                                    JSONObject condition = new JSONObject(branchValues.getString("extraCondition"));
-                                    ArrayList<Integer> values = new ArrayList<Integer>();
-                                    ArrayList<Integer> valuesCompare = new ArrayList<Integer>();
+                                    boolean extraCondition = false; // Assume the second condition is always false
 
-                                    Iterator<String> iterator1 = condition.keys();
-                                    while(iterator1.hasNext()){
-                                        int key = Integer.parseInt(iterator1.next());
-                                        values.add(tempAnswerList.get(key));
-                                        valuesCompare.add(condition.getInt(Integer.toString(key)));
+                                    if (!branchValues.isNull("extraCondition")) {
+                                        /* This get the extra condition(s) for the survey to branch */
+                                        JSONObject condition = new JSONObject(branchValues.getString("extraCondition"));
+                                        ArrayList<Integer> values = new ArrayList<Integer>();
+                                        ArrayList<Integer> valuesCompare = new ArrayList<Integer>();
+
+                                        Iterator<String> iterator1 = condition.keys();
+                                        while (iterator1.hasNext()) {
+                                            int key = Integer.parseInt(iterator1.next());
+                                            values.add(tempAnswerList.get(key));
+                                            valuesCompare.add(condition.getInt(Integer.toString(key)));
+                                        }
+
+                                        extraCondition = compare(values, valuesCompare);
                                     }
 
-                                    extraCondition = compare(values, valuesCompare);
-                                }
-
-                                if(isTotal){
-                                    if(branchValue >= total || extraCondition) {
-                                        if (branchValues.isNull("nextIndex")) {
-                                            // Put JSONArray of answers into the result JSONObject and send to server
-                                            try {
-                                                results.put("questions", questionResults);
-                                                results.put("totalScore", total);
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-
-                                            final Response.Listener<String> responseListener = new Response.Listener<String>() {
-                                                @Override
-                                                public void onResponse(String response) {
-                                                    try {
-                                                        String activity = branchValues.getString("activity");
-                                                        Intent branchIntent = new Intent(SurveyActivity.this, Branch.getActivity(activity));
-                                                        SurveyActivity.this.startActivity(branchIntent);
-                                                    } catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
+                                    if (isTotal) {
+                                        if (branchValue >= total || extraCondition) {
+                                            if (branchValues.isNull("nextIndex")) {
+                                                // Put JSONArray of answers into the result JSONObject and send to server
+                                                try {
+                                                    results.put("questions", questionResults);
+                                                    results.put("totalScore", total);
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
                                                 }
-                                            };
 
-                                            SurveyRequest surveyRequest = new SurveyRequest(nextSurvey, surveyId, Integer.toString(userId), results.toString(), responseListener);
-                                            RequestQueue queue = Volley.newRequestQueue(SurveyActivity.this);
-                                            queue.add(surveyRequest);
+                                                final Response.Listener<String> responseListener = new Response.Listener<String>() {
+                                                    @Override
+                                                    public void onResponse(String response) {
+                                                        try {
+                                                            String activity = branchValues.getString("activity");
+                                                            Intent branchIntent = new Intent(SurveyActivity.this, Branch.getActivity(activity));
+                                                            SurveyActivity.this.startActivity(branchIntent);
+                                                        } catch (JSONException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
+                                                };
+
+                                                SurveyRequest surveyRequest = new SurveyRequest(nextSurvey, surveyId, Integer.toString(userId), results.toString(), responseListener);
+                                                RequestQueue queue = Volley.newRequestQueue(SurveyActivity.this);
+                                                queue.add(surveyRequest);
+                                            } else {
+                                                int newNextIndex = branchValues.getInt("nextIndex");
+                                                // Delete all the existing button to prepare for the new one
+                                                mError.setText("");
+                                                mRadioGroup.clearCheck();
+                                                mRelativeLayout.removeView(mRadioGroup);
+                                                loadPage(nextIndex);
+                                            }
                                         } else {
-                                            int newNextIndex = branchValues.getInt("nextIndex");
                                             // Delete all the existing button to prepare for the new one
                                             mError.setText("");
-                                            mRadioGroup.removeAllViews();
                                             mRadioGroup.clearCheck();
-                                            loadPage(newNextIndex);
+                                            mRelativeLayout.removeView(mRadioGroup);
+                                            loadPage(nextIndex);
                                         }
                                     } else {
-                                        // Delete all the existing button to prepare for the new one
-                                        mError.setText("");
-                                        mRadioGroup.removeAllViews();
-                                        mRadioGroup.clearCheck();
-                                        loadPage(nextIndex);
-                                    }
-                                }else{
-                                    if(branchValue == checkedValue || extraCondition) {
-                                        if (branchValues.isNull("nextIndex")) {
-                                            // Put JSONArray of answers into the result JSONObject and send to server
-                                            try {
-                                                results.put("questions", questionResults);
-                                                results.put("totalScore", total);
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-
-                                            final Response.Listener<String> responseListener = new Response.Listener<String>() {
-                                                @Override
-                                                public void onResponse(String response) {
-                                                    try {
-                                                        String activity = branchValues.getString("activity");
-                                                        Intent branchIntent = new Intent(SurveyActivity.this, Branch.getActivity(activity));
-                                                        SurveyActivity.this.startActivity(branchIntent);
-                                                    } catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
+                                        if (branchValue == checkedValue || extraCondition) {
+                                            if (branchValues.isNull("nextIndex")) {
+                                                // Put JSONArray of answers into the result JSONObject and send to server
+                                                try {
+                                                    results.put("questions", questionResults);
+                                                    results.put("totalScore", total);
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
                                                 }
-                                            };
 
-                                            SurveyRequest surveyRequest = new SurveyRequest(nextSurvey, surveyId, Integer.toString(userId), results.toString(), responseListener);
-                                            RequestQueue queue = Volley.newRequestQueue(SurveyActivity.this);
-                                            queue.add(surveyRequest);
+                                                final Response.Listener<String> responseListener = new Response.Listener<String>() {
+                                                    @Override
+                                                    public void onResponse(String response) {
+                                                        try {
+                                                            String activity = branchValues.getString("activity");
+                                                            Intent branchIntent = new Intent(SurveyActivity.this, Branch.getActivity(activity));
+                                                            SurveyActivity.this.startActivity(branchIntent);
+                                                        } catch (JSONException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
+                                                };
+
+                                                SurveyRequest surveyRequest = new SurveyRequest(nextSurvey, surveyId, Integer.toString(userId), results.toString(), responseListener);
+                                                RequestQueue queue = Volley.newRequestQueue(SurveyActivity.this);
+                                                queue.add(surveyRequest);
+                                            } else {
+                                                int newNextIndex = branchValues.getInt("nextIndex");
+                                                // Delete all the existing button to prepare for the new one
+                                                mError.setText("");
+                                                mRadioGroup.clearCheck();
+                                                mRelativeLayout.removeView(mRadioGroup);
+                                                loadPage(nextIndex);
+                                            }
                                         } else {
-                                            int newNextIndex = branchValues.getInt("nextIndex");
                                             // Delete all the existing button to prepare for the new one
                                             mError.setText("");
-                                            mRadioGroup.removeAllViews();
                                             mRadioGroup.clearCheck();
-                                            loadPage(newNextIndex);
+                                            mRelativeLayout.removeView(mRadioGroup);
+                                            loadPage(nextIndex);
                                         }
-                                    } else {
-                                        // Delete all the existing button to prepare for the new one
-                                        mError.setText("");
-                                        mRadioGroup.removeAllViews();
-                                        mRadioGroup.clearCheck();
-                                        loadPage(nextIndex);
                                     }
+                                } catch (JSONException e) {
+                                    // Delete all the existing button to prepare for the new one
+                                    mError.setText("");
+                                    mRadioGroup.clearCheck();
+                                    mRelativeLayout.removeView(mRadioGroup);
+                                    loadPage(nextIndex);
                                 }
-                            }catch (JSONException e) {
+                            }
+                        }else if(type.equals("Text")){
+                            String textAnwer = mTextAnswer.getText().toString();
+
+                            // Save the answer to the JSON file
+                            JSONObject questionResult = new JSONObject();
+                            try {
+                                questionResult.put("pmkQuestionId", questionId);
+                                questionResult.put("fnkSurveyId", surveyId);
+                                questionResult.put("fldQuestion", questionText);
+                                questionResult.put("fldAnswerText", textAnwer);
+
+                                // Put this object into an JSONArray
+                                questionResults.put(questionResult);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            if (nextIndex >= surveyQuestionsLength) {
+                                // Put JSONArray of answers into the result JSONObject and send to server
+                                try {
+                                    results.put("questions", questionResults);
+                                    results.put("totalScore", total);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                                final Response.Listener<String> responseListener = new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        Intent thankIntent = new Intent(SurveyActivity.this, ThankActivity.class);
+                                        SurveyActivity.this.startActivity(thankIntent);
+                                    }
+                                };
+
+                                SurveyRequest surveyRequest = new SurveyRequest(nextSurvey, surveyId, Integer.toString(userId), results.toString(), responseListener);
+                                RequestQueue queue = Volley.newRequestQueue(SurveyActivity.this);
+                                queue.add(surveyRequest);
+
+                            } else {
                                 // Delete all the existing button to prepare for the new one
                                 mError.setText("");
-                                mRadioGroup.removeAllViews();
-                                mRadioGroup.clearCheck();
+                                mRelativeLayout.removeView(mTextAnswer);
                                 loadPage(nextIndex);
                             }
                         }
+                    }else{
+                        mError.setText("Please choose an answer before proceeding.");
                     }
                 }
             });

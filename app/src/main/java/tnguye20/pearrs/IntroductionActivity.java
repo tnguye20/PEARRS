@@ -3,6 +3,7 @@ package tnguye20.pearrs;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -26,10 +27,11 @@ import java.util.Iterator;
 public class IntroductionActivity extends AppCompatActivity {
     private static final String INTRO_REQUEST_URL = "http://tnguye20.w3.uvm.edu/pearrs/intro.php";
     private Button mProceedButton;
+    private TextView mIntro;
     private TextView mQuestion;
     private TextView mError;
-    private EditText textAnswer;
-    private RadioGroup radioGroup;
+    private EditText mTextAnswer;
+    private RadioGroup mRadioGroup;
     private RadioButton radioButton;
     private RelativeLayout mRelativeLayout;
     RelativeLayout.LayoutParams layoutParams;
@@ -61,6 +63,7 @@ public class IntroductionActivity extends AppCompatActivity {
         /* Get all the views */
         mRelativeLayout = (RelativeLayout)findViewById(R.id.activity_introduction);
         mQuestion = (TextView)findViewById(R.id.questionTextView);
+        mIntro = (TextView)findViewById(R.id.introTextView);
         mError = (TextView)findViewById(R.id.errorTextView);
         mProceedButton = (Button)findViewById(R.id.proceedButton);
 
@@ -107,11 +110,12 @@ public class IntroductionActivity extends AppCompatActivity {
             }
 
             if(type.equals("Text")){
-                textAnswer = new EditText(IntroductionActivity.this);
-                mRelativeLayout.addView(textAnswer, layoutParams);
+                mTextAnswer = new EditText(IntroductionActivity.this);
+                mTextAnswer.setGravity(Gravity.CENTER);
+                mRelativeLayout.addView(mTextAnswer, layoutParams);
             }else if (type.equals("Radio")){
-                radioGroup = new RadioGroup(IntroductionActivity.this);
-                radioGroup.setOrientation(RadioGroup.VERTICAL);
+                mRadioGroup = new RadioGroup(IntroductionActivity.this);
+                mRadioGroup.setOrientation(RadioGroup.VERTICAL);
 
                 /* Create all the radio button(s) for the question dynamically */
                 answers = new JSONObject(question.getString("fldAnswers"));
@@ -128,32 +132,44 @@ public class IntroductionActivity extends AppCompatActivity {
                     radioButton = new RadioButton(IntroductionActivity.this);
                     radioButton.setId(answerValue);
                     radioButton.setText(answerText);
-                    radioGroup.addView(radioButton);
+                    mRadioGroup.addView(radioButton);
                 }
-                mRelativeLayout.addView(radioGroup, layoutParams);
+                mRelativeLayout.addView(mRadioGroup, layoutParams);
             }
 
             mProceedButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // Get rid of the intro text
+                    //mIntro.setText("");
+
                     boolean proceed = true;
                     /* Get the values of the answer */
                    if(type.equals("Radio")){
-                       if(radioGroup.getCheckedRadioButtonId() == -1) {
+                       if(mRadioGroup.getCheckedRadioButtonId() == -1) {
                            // This means they haven't clicked anything yet
                            proceed = false;
                        }
                    }else if(type.equals("Text")){
-                       if(textAnswer.getText().toString().equals("")){
+                       if(mTextAnswer.getText().toString().equals("")){
                            proceed = false;
                        }
                    }
 
                     if(proceed) {
-                        mError.setText("");
-                        mRelativeLayout.removeView(radioGroup);
-                        mRelativeLayout.removeView(textAnswer);
-                        loadPage(nextIndex);
+                        if(nextIndex >= introSurveyLength){
+                            Intent surveyIntent = new Intent(IntroductionActivity.this, SurveyActivity.class);
+                            surveyIntent.putExtra("userId", userId);
+                            surveyIntent.putExtra("nextSurvey", nextSurvey);
+                            surveyIntent.putExtra("surveyQuestions", surveyQuestions);
+                            surveyIntent.putExtra("intro", "Thank you for your information. Please complete the survey below");
+                            IntroductionActivity.this.startActivity(surveyIntent);
+                        }else {
+                            mError.setText("");
+                            mRelativeLayout.removeView(mRadioGroup);
+                            mRelativeLayout.removeView(mTextAnswer);
+                            loadPage(nextIndex);
+                        }
                     }else{
                         mError.setText("Please choose an answer before proceeding.");
                     }

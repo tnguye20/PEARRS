@@ -11,17 +11,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="tnguye20.pearrs.IntroductionActivity">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="208dp"
-        android:id="@+id/questionTextView"
-        android:textAlignment="center"
-        android:textSize="24sp"/>
-
     <Button
         android:text="Next"
         android:layout_width="wrap_content"
@@ -42,5 +31,29 @@
         android:textSize="20sp"
         android:textAlignment="center"
         android:textColor="@android:color/holo_red_dark"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="231dp"
+        android:id="@+id/questionTextView"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="70dp"
+        android:id="@+id/introTextView"
+        android:textSize="24sp"
+        android:textAlignment="viewStart"
+        android:text="Before we get started, please tell us a little bit about yourself"
+        android:layout_alignBottom="@+id/questionTextView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textStyle="normal|bold"/>
 
 </RelativeLayout>
