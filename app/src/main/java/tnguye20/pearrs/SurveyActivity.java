@@ -208,8 +208,9 @@ public class SurveyActivity extends AppCompatActivity {
                                 final Response.Listener<String> responseListener = new Response.Listener<String>() {
                                     @Override
                                     public void onResponse(String response) {
-                                        Intent thankIntent = new Intent(SurveyActivity.this, ThankActivity.class);
-                                        SurveyActivity.this.startActivity(thankIntent);
+                                        Intent positiveIntent = new Intent(SurveyActivity.this, PositiveActivity.class);
+                                        positiveIntent.putExtra("total", total);
+                                        SurveyActivity.this.startActivity(positiveIntent);
                                     }
                                 };
 
@@ -366,8 +367,9 @@ public class SurveyActivity extends AppCompatActivity {
                                 final Response.Listener<String> responseListener = new Response.Listener<String>() {
                                     @Override
                                     public void onResponse(String response) {
-                                        Intent thankIntent = new Intent(SurveyActivity.this, ThankActivity.class);
-                                        SurveyActivity.this.startActivity(thankIntent);
+                                        Intent positiveIntent = new Intent(SurveyActivity.this, PositiveActivity.class);
+                                        positiveIntent.putExtra("total", total);
+                                        SurveyActivity.this.startActivity(positiveIntent);
                                     }
                                 };
 

@@ -11,6 +11,8 @@ public class Branch {
                 return ThankActivity.class;
             case "SurveyActivity":
                 return SurveyActivity.class;
+            case "NegativeActivity":
+                return NegativeActivity.class;
             default:
                 return LoginActivity.class;
         }
