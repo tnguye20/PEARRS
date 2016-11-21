@@ -17,10 +17,13 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Iterator;
+
 public class LoginActivity extends AppCompatActivity {
     // Instantiate variables
     private EditText mUserName;
     private EditText mPass;
+    private TextView mError;
     private Button mLoginButton;
     private TextView mRegister;
 
@@ -33,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         mPass = (EditText)findViewById(R.id.passTextView);
         mLoginButton = (Button)findViewById(R.id.loginButton);
         mRegister = (TextView)findViewById(R.id.registerTextView);
+        mError = (TextView)findViewById(R.id.errorTextView);
 
         //Handler for the Register
         mRegister.setOnClickListener(new View.OnClickListener() {
@@ -47,7 +51,6 @@ public class LoginActivity extends AppCompatActivity {
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mLoginButton.setText("Verifying...");
                 final String userName = mUserName.getText().toString();
                 final String password = mPass.getText().toString();
 
@@ -84,6 +87,18 @@ public class LoginActivity extends AppCompatActivity {
                                     surveyIntent.putExtra("surveyQuestions", surveyQuestions);
                                     LoginActivity.this.startActivity(surveyIntent);
                                 }
+                            }else{
+                                String errorText = "";
+                                mError.setText(errorText);
+
+                                Iterator<String> iterator = jsonResponse.keys();
+                                while(iterator.hasNext()){
+                                    String key = (String)iterator.next();
+                                    if(!key.equals("success")){
+                                        errorText += jsonResponse.getString(key) + "\n";
+                                    }
+                                }
+                                mError.setText(errorText);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

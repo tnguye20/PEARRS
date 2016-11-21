@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_negative"
     android:layout_width="match_parent"
@@ -9,18 +10,28 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/colorBackground"
     tools:context="tnguye20.pearrs.NegativeActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="107dp"
         android:id="@+id/textView4"
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="normal|bold"
         android:text=" On the basis of your responses to the alcohol questions, we have no concerns about your drinking. If you have concerns about drinking, smoking, drug use, exercise, or sleep, please discuss them with your doctor at you next visit.    Have a good day."
-        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/logo"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/imageView3"
+        android:adjustViewBounds="true"/>
 </RelativeLayout>

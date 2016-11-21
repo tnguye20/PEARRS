@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_survey"
     android:layout_width="match_parent"
@@ -9,6 +10,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/colorBackground"
     tools:context="tnguye20.pearrs.SurveyActivity">
 
     <Button
@@ -31,16 +33,15 @@
         android:textColor="@android:color/holo_red_dark"
         android:textAlignment="center"/>
 
-    <TextView
-        android:layout_width="match_parent"
+    <ImageView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="248dp"
-        android:id="@+id/questionTextView"
-        android:textAlignment="center"
-        android:textSize="24sp"
+        app:srcCompat="@drawable/logo"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:id="@+id/imageView7"
+        android:adjustViewBounds="true"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -49,8 +50,19 @@
         android:textAlignment="textStart"
         android:textSize="24sp"
         android:textStyle="normal|bold"
-        android:layout_marginTop="107dp"
-        android:layout_alignParentTop="true"
+        android:layout_marginTop="19dp"
+        android:layout_below="@+id/imageView7"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="63dp"
+        android:id="@+id/questionTextView"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:layout_below="@+id/introTextView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 
