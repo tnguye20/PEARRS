@@ -34,7 +34,7 @@ public class IntroductionActivity extends AppCompatActivity {
     private RadioGroup mRadioGroup;
     private RadioButton radioButton;
     private RelativeLayout mRelativeLayout;
-    RelativeLayout.LayoutParams layoutParams;
+    RelativeLayout.LayoutParams mLayoutParams;
 
     /* GLOBAL VARIABLES FOR THE ENTIRE SURVEY */
     private int userId;
@@ -68,8 +68,8 @@ public class IntroductionActivity extends AppCompatActivity {
         mProceedButton = (Button)findViewById(R.id.proceedButton);
 
         /* Get the params for the layout */
-        layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.addRule(RelativeLayout.BELOW, R.id.questionTextView);
+        mLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mLayoutParams.addRule(RelativeLayout.BELOW, R.id.questionTextView);
 
         Response.Listener<JSONArray> responseListener = new Response.Listener<JSONArray>() {
             @Override
@@ -106,13 +106,14 @@ public class IntroductionActivity extends AppCompatActivity {
 
             /* Change the button text if it is the last question */
             if(nextIndex >= introSurveyLength){
+                mProceedButton.setGravity(Gravity.CENTER);
                 mProceedButton.setText("Submit");
             }
 
             if(type.equals("Text")){
                 mTextAnswer = new EditText(IntroductionActivity.this);
                 mTextAnswer.setGravity(Gravity.CENTER);
-                mRelativeLayout.addView(mTextAnswer, layoutParams);
+                mRelativeLayout.addView(mTextAnswer, mLayoutParams);
             }else if (type.equals("Radio")){
                 mRadioGroup = new RadioGroup(IntroductionActivity.this);
                 mRadioGroup.setOrientation(RadioGroup.VERTICAL);
@@ -134,7 +135,7 @@ public class IntroductionActivity extends AppCompatActivity {
                     radioButton.setText(answerText);
                     mRadioGroup.addView(radioButton);
                 }
-                mRelativeLayout.addView(mRadioGroup, layoutParams);
+                mRelativeLayout.addView(mRadioGroup, mLayoutParams);
             }
 
             mProceedButton.setOnClickListener(new View.OnClickListener() {
