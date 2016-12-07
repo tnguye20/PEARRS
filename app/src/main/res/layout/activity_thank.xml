@@ -10,50 +10,21 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="tnguye20.pearrs.ThankActivity">
-
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="7dp"
-        android:layout_marginStart="7dp"
-        android:background="@color/colorBackground"
-        android:id="@+id/doctorRadioGroup">
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Yes"
-            android:id="@+id/Yes"
-            android:layout_gravity="center"
-            android:textAlignment="center"
-            android:textSize="22sp"/>
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="No"
-            android:id="@+id/No"
-            android:layout_gravity="center"
-            android:textAlignment="center"
-            android:textSize="22sp"
-            />
-    </RadioGroup>
+    tools:context="tnguye20.pearrs.ThankActivity"
+    android:background="@color/colorBackground">
 
     <TextView
-        android:text="Thank you for answering the survey. Would you wan to share your responses with your doctor?"
+        android:text="Thank you for answering the survey. Please check back tomorrow for your daily check up."
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textView"
         android:textAlignment="center"
-        android:textSize="22sp"
+        android:textSize="24sp"
         android:layout_marginTop="208dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:textColor="@android:color/background_dark"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -63,5 +34,6 @@
         android:layout_alignLeft="@+id/doctorRadioGroup"
         android:layout_alignStart="@+id/doctorRadioGroup"
         android:id="@+id/imageView8"
-        android:adjustViewBounds="true"/>
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"/>
 </RelativeLayout>

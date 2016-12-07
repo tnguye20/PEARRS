@@ -23,7 +23,8 @@
         android:text=" On the basis of your responses to the alcohol questions, we have no concerns about your drinking. If you have concerns about drinking, smoking, drug use, exercise, or sleep, please discuss them with your doctor at you next visit.    Have a good day."
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:textColor="@android:color/background_dark"/>
 
     <ImageView
         android:layout_width="wrap_content"

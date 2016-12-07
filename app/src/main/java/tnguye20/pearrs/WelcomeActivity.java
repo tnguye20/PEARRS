@@ -12,7 +12,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private TextView mWelcome;
     private Button mProceedButton;
     private int userId;
-    private String firstName;
+    private String lastName;
     private String gender;
     private String nextSurvey;
     private String surveyQuestions;
@@ -27,23 +27,16 @@ public class WelcomeActivity extends AppCompatActivity {
         Intent intent = getIntent();
         //int userId = intent.getIntExtra("userId", 1000);
         if(intent == null){
-            firstName = "Friend";
+            lastName = "Friend";
         } else {
             userId = intent.getIntExtra("userId", 0);
-            firstName = intent.getStringExtra("firstName");
+            lastName = intent.getStringExtra("lastName");
             gender = intent.getStringExtra("gender");
             nextSurvey = intent.getStringExtra("nextSurvey");
             surveyQuestions = intent.getStringExtra("surveyQuestions");
         }
 
-        /* Evaluate gender to display accordingly */
-        if(gender.equals("M")){
-            displayString = "Hello, Mr. ";
-        }else{
-            displayString = "Hello, Ms. ";
-        }
-
-        displayString += firstName + "! Thank you for downloading the PEARRS app. Let's get started!\n";
+        displayString = "Welcome " + lastName + "! Thank you for downloading the PEARRS app. Let's get started!\n";
         displayString += "We have some questions about your health behaviors.\n";
         displayString += "We will not share yout answers with your doctor unless you ask us to. Please press the button below to proceed.";
 
@@ -61,7 +54,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     newIntent = new Intent(WelcomeActivity.this, SurveyActivity.class);
                 }
                 newIntent.putExtra("userId", userId);
-                newIntent.putExtra("firstName", firstName);
+                newIntent.putExtra("firstName", lastName);
                 newIntent.putExtra("nextSurvey", nextSurvey);
                 newIntent.putExtra("surveyQuestions", surveyQuestions);
                 WelcomeActivity.this.startActivity(newIntent);

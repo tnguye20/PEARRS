@@ -44,20 +44,9 @@
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:id="@+id/imageView4"
-        android:adjustViewBounds="true"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/introTextView"
-        android:textSize="24sp"
-        android:textAlignment="viewStart"
-        android:text="Before we get started, please tell us a little bit about yourself"
-        android:textStyle="normal|bold"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/imageView4"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:cropToPadding="false"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -67,6 +56,20 @@
         android:textAlignment="center"
         android:textSize="24sp"
         android:layout_below="@+id/introTextView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/introTextView"
+        android:textSize="24sp"
+        android:textAlignment="viewStart"
+        android:text="Before we get started, please tell us a little bit about yourself"
+        android:textStyle="normal|bold"
+        android:layout_marginTop="17dp"
+        android:textColor="@android:color/background_dark"
+        android:layout_below="@+id/imageView4"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 

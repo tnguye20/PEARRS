@@ -47,6 +47,7 @@ public class AssessmentActivity extends AppCompatActivity {
     private String questionId;
     private String surveyId;
     private String type;
+    private String answerType;
     private JSONObject branchValues;
     private JSONObject answers;
     private ArrayList<Integer> tempAnswerList;
@@ -103,6 +104,9 @@ public class AssessmentActivity extends AppCompatActivity {
 
             /* Get the question type */
             type = question.getString("fldType");
+
+             /* Get the question answer type */
+            answerType = question.getString("fldAnswerType");
 
             /* Change the button text if it is the last question */
             if(nextIndex >= assetSurveyLength){
@@ -163,6 +167,16 @@ public class AssessmentActivity extends AppCompatActivity {
                     }else if(type.equals("Text")){
                         if(mTextAnswer.getText().toString().equals("")){
                             proceed = false;
+                        }if(mTextAnswer.getText().toString().equals("")){
+                            proceed = false;
+                        }else {
+                            if(answerType.equals("float")){
+                                try{
+                                    float x = Float.parseFloat(mTextAnswer.getText().toString());
+                                }catch (NumberFormatException e){
+                                    proceed = false;
+                                }
+                            }
                         }
                     }else if(type.equals("Spinner")){
                         if(mSpinner.getSelectedItem() == null){

@@ -49,6 +49,7 @@ public class SurveyActivity extends AppCompatActivity {
     private String questionId;
     private String surveyId;
     private String type;
+    private String answerType;
     private JSONObject branchValues;
     private JSONObject answers;
     private ArrayList<Integer> tempAnswerList;
@@ -82,8 +83,9 @@ public class SurveyActivity extends AppCompatActivity {
         mQuestion = (TextView) findViewById(R.id.questionTextView);
         mError = (TextView) findViewById(R.id.errorTextView);
         mIntro = (TextView)findViewById(R.id.introTextView);
-        mIntro.setText(intent.getStringExtra("intro"));
-
+        if(!nextSurvey.equals("1")){
+            mIntro.setText("");
+        }
         /* Get the params for the layout */
         mLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mLayoutParams.addRule(RelativeLayout.BELOW, R.id.questionTextView);
@@ -117,6 +119,9 @@ public class SurveyActivity extends AppCompatActivity {
 
             /* Get the question type */
             type = question.getString("fldType");
+
+            /* Get the question answer type */
+            answerType = question.getString("fldAnswerType");
 
             /* Change the button text if it is the last question */
             if(nextIndex >= surveyQuestionsLength){
@@ -166,7 +171,9 @@ public class SurveyActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     // Get rid of the intro text
-                    //mIntro.setText("");
+                    if(nextIndex == 1) {
+                        mIntro.setText("");
+                    }
 
                     boolean proceed = true;
                     if(type.equals("Radio")){
@@ -176,6 +183,18 @@ public class SurveyActivity extends AppCompatActivity {
                         }
                     }else if(type.equals("Text")){
                         if(mTextAnswer.getText().toString().equals("")){
+                            proceed = false;
+                        }else {
+                            if(answerType.equals("float")){
+                                try{
+                                    float x = Float.parseFloat(mTextAnswer.getText().toString());
+                                }catch (NumberFormatException e){
+                                    proceed = false;
+                                }
+                            }
+                        }
+                    }else if(type.equals("Spinner")){
+                        if(mSpinner.getSelectedItem() == null){
                             proceed = false;
                         }
                     }
@@ -347,6 +366,7 @@ public class SurveyActivity extends AppCompatActivity {
                             }
                         }else if(type.equals("Text")){
                             String textAnwer = mTextAnswer.getText().toString();
+                            /* VALIDTION NEEDED */
 
                             // Save the answer to the JSON file
                             JSONObject questionResult = new JSONObject();
@@ -437,7 +457,7 @@ public class SurveyActivity extends AppCompatActivity {
                             }
                         }
                     }else{
-                        mError.setText("Please choose an answer before proceeding.");
+                        mError.setText("Please input valid answer before proceeding.");
                     }
                 }
             });

@@ -6,24 +6,12 @@
     android:id="@+id/activity_register"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="0dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp"
     android:background="@color/colorBackground"
     tools:context="tnguye20.pearrs.RegisterActivity">
-
-     <EditText
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:inputType="textPersonName"
-         android:ems="10"
-         android:id="@+id/firstNameEditText"
-         android:hint="First Name"
-         android:layout_marginTop="30dp"
-         android:layout_below="@+id/textView3"
-         android:layout_alignParentLeft="true"
-         android:layout_alignParentStart="true"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -102,18 +90,6 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="7dp"/>
 
-    <TextView
-        android:text="Join Us!"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
-        android:id="@+id/textView3"
-        android:textAlignment="center"
-        android:textSize="30dp"
-        android:textStyle="normal|bold"
-        android:layout_below="@+id/alertTextView"
-        android:layout_centerHorizontal="true"/>
-
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -131,9 +107,13 @@
         app:srcCompat="@drawable/logo"
         android:id="@+id/imageView6"
         android:adjustViewBounds="true"
+        android:cropToPadding="false"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:scaleType="fitXY"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -143,9 +123,34 @@
         android:textStyle="normal|bold"
         android:textColor="@android:color/holo_red_dark"
         android:textSize="20sp"
-        android:layout_above="@+id/firstNameEditText"
+        android:layout_below="@+id/registerButton"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="7dp"
+        android:layout_marginEnd="7dp"/>
+
+    <TextView
+        android:text="Join Us!"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView3"
+        android:textAlignment="center"
+        android:textSize="30dp"
+        android:textStyle="normal|bold"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_below="@+id/imageView6"
+        android:layout_centerHorizontal="true"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/firstNameEditText"
+        android:hint="First Name"
+        android:layout_marginTop="7dp"
+        android:layout_below="@+id/textView3"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="50dp"/>
+        android:layout_alignParentStart="true"/>
 
 </RelativeLayout>

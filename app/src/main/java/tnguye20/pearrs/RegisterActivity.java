@@ -60,6 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mError.setText("");
                 // Get values from View
                 final String firstName = mFirstName.getText().toString();
                 final String lastName = mLastName.getText().toString();
@@ -82,7 +83,6 @@ public class RegisterActivity extends AppCompatActivity {
                                 RegisterActivity.this.startActivity(loginIntent);
                             }else{
                                 String errorText = "";
-                                mError.setText(errorText);
 
                                 Iterator<String> iterator = jsonResponse.keys();
                                 while(iterator.hasNext()){

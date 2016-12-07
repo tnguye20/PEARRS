@@ -45,6 +45,7 @@ public class IntroductionActivity extends AppCompatActivity {
     private JSONObject question;
     private String questionText;
     private String type;
+    private String answerType;
     private String questionId;
     private String surveyId;
     private JSONObject answers;
@@ -104,6 +105,9 @@ public class IntroductionActivity extends AppCompatActivity {
             /* Get the question type */
             type = question.getString("fldType");
 
+            /* Get the question answer type */
+            answerType = question.getString("fldAnswerType");
+
             /* Change the button text if it is the last question */
             if(nextIndex >= introSurveyLength){
                 mProceedButton.setGravity(Gravity.CENTER);
@@ -142,8 +146,11 @@ public class IntroductionActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     // Get rid of the intro text
-                    //mIntro.setText("");
-
+                    /*
+                    if(nextIndex == 1){
+                        mIntro.setText("");
+                    }
+                    */
                     boolean proceed = true;
                     /* Get the values of the answer */
                    if(type.equals("Radio")){
@@ -154,6 +161,14 @@ public class IntroductionActivity extends AppCompatActivity {
                    }else if(type.equals("Text")){
                        if(mTextAnswer.getText().toString().equals("")){
                            proceed = false;
+                       }else {
+                            if(answerType.equals("float")){
+                                try{
+                                    float x = Float.parseFloat(mTextAnswer.getText().toString());
+                                }catch (NumberFormatException e){
+                                    proceed = false;
+                                }
+                            }
                        }
                    }
 
@@ -163,7 +178,7 @@ public class IntroductionActivity extends AppCompatActivity {
                             surveyIntent.putExtra("userId", userId);
                             surveyIntent.putExtra("nextSurvey", nextSurvey);
                             surveyIntent.putExtra("surveyQuestions", surveyQuestions);
-                            surveyIntent.putExtra("intro", "Thank you for your information. Please complete the survey below");
+                            //surveyIntent.putExtra("intro", "Thank you for your information. Please complete the survey below");
                             IntroductionActivity.this.startActivity(surveyIntent);
                         }else {
                             mError.setText("");
@@ -172,7 +187,7 @@ public class IntroductionActivity extends AppCompatActivity {
                             loadPage(nextIndex);
                         }
                     }else{
-                        mError.setText("Please choose an answer before proceeding.");
+                        mError.setText("Please input valid answer before proceeding.");
                     }
                 }
             });
