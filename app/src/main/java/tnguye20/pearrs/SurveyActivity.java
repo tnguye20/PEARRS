@@ -3,6 +3,7 @@ package tnguye20.pearrs;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -109,7 +110,7 @@ public class SurveyActivity extends AppCompatActivity {
 
             /* Get and set the question text */
             questionText = question.getString("fldQuestion");
-            mQuestion.setText(questionText);
+            mQuestion.setText(Integer.toString(nextIndex) + ". " + questionText);
 
             /* Get the question ID */
             questionId = question.getString("pmkQuestionId");
@@ -130,6 +131,7 @@ public class SurveyActivity extends AppCompatActivity {
 
             if(type.equals("Text")){
                 mTextAnswer = new EditText(SurveyActivity.this);
+                mTextAnswer.setGravity(Gravity.CENTER);
                 mRelativeLayout.addView(mTextAnswer, mLayoutParams);
             }else if(type.equals("Radio")) {
                 /* Create all the radio button(s) for the question dynamically */

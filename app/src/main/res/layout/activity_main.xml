@@ -13,19 +13,6 @@
     android:paddingTop="0dp"
     tools:context="tnguye20.pearrs.LoginActivity" >
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="33dp"
-        android:id="@+id/errorTextView"
-        android:textAlignment="center"
-        android:textStyle="normal|bold"
-        android:textSize="20sp"
-        android:textColor="@android:color/holo_red_dark"/>
-
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,7 +23,9 @@
         android:layout_below="@+id/userNameEditText"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="22dp"/>
+        android:layout_marginTop="22dp"
+        android:textSize="22sp"
+        android:background="@android:color/white"/>
 
     <TextView
         android:text="Register"
@@ -78,12 +67,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView2"
-        android:textAlignment="center"
-        android:textSize="28dp"
-        android:textStyle="normal|bold"
-        android:textColor="@android:color/background_dark"
         android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:textStyle="normal|bold|italic"
+        android:textAllCaps="true"
+        android:textSize="28sp"
+        android:textColor="@android:color/background_dark"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -92,8 +81,22 @@
         android:ems="10"
         android:id="@+id/userNameEditText"
         android:hint="User Name"
-        android:layout_marginTop="40dp"
+        android:background="@android:color/white"
+        android:textSize="22sp"
         android:layout_below="@+id/errorTextView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="19dp"
+        android:id="@+id/errorTextView"
+        android:textAlignment="center"
+        android:textStyle="normal|bold"
+        android:textSize="20sp"
+        android:textColor="@android:color/holo_red_dark"
+        android:layout_below="@+id/textView2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 

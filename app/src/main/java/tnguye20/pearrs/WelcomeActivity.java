@@ -13,6 +13,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private Button mProceedButton;
     private int userId;
     private String lastName;
+    private String firstName;
     private String gender;
     private String nextSurvey;
     private String surveyQuestions;
@@ -28,15 +29,17 @@ public class WelcomeActivity extends AppCompatActivity {
         //int userId = intent.getIntExtra("userId", 1000);
         if(intent == null){
             lastName = "Friend";
+            firstName = "";
         } else {
             userId = intent.getIntExtra("userId", 0);
+            firstName = intent.getStringExtra("firstName");
             lastName = intent.getStringExtra("lastName");
             gender = intent.getStringExtra("gender");
             nextSurvey = intent.getStringExtra("nextSurvey");
             surveyQuestions = intent.getStringExtra("surveyQuestions");
         }
 
-        displayString = "Welcome " + lastName + "! Thank you for downloading the PEARRS app. Let's get started!\n";
+        displayString = "Welcome " + firstName + " " +lastName + "! Thank you for downloading the PEARRS app. Let's get started!\n";
         displayString += "We have some questions about your health behaviors.\n";
         displayString += "We will not share yout answers with your doctor unless you ask us to. Please press the button below to proceed.";
 

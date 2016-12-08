@@ -63,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                             boolean success = jsonResponse.getBoolean("success");
                             if(success) {
                                 final int userId = jsonResponse.getInt("userId");
+                                final String firstName = jsonResponse.getString("firstName");
                                 final String lastName = jsonResponse.getString("lastName");
                                 final String gender = jsonResponse.getString("gender");
                                 final String nextSurvey = jsonResponse.getString("nextSurvey");
@@ -72,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
                                     /* This means they are a new user, take them to the welcome screen */
                                     Intent welcomeIntent = new Intent(LoginActivity.this, WelcomeActivity.class);
                                     welcomeIntent.putExtra("userId", userId);
+                                    welcomeIntent.putExtra("firstName",firstName);
                                     welcomeIntent.putExtra("lastName", lastName);
                                     welcomeIntent.putExtra("gender", gender);
                                     welcomeIntent.putExtra("nextSurvey", nextSurvey);
@@ -81,6 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                                     /* Existing user, take the survey right away */
                                     Intent surveyIntent = new Intent(LoginActivity.this, SurveyActivity.class);
                                     surveyIntent.putExtra("userId", userId);
+                                    surveyIntent.putExtra("firstName", firstName);
                                     surveyIntent.putExtra("lastName", lastName);
                                     surveyIntent.putExtra("gender", gender);
                                     surveyIntent.putExtra("nextSurvey", nextSurvey);

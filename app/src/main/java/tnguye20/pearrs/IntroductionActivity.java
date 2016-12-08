@@ -94,7 +94,7 @@ public class IntroductionActivity extends AppCompatActivity {
 
             /* Get and set the question text */
             questionText = question.getString("fldQuestion");
-            mQuestion.setText(questionText);
+            mQuestion.setText(Integer.toString(nextIndex) + ". " + questionText);
 
             /* Get the question ID */
             questionId = question.getString("pmkQuestionId");

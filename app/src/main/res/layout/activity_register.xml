@@ -16,6 +16,18 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/firstNameEditText"
+        android:hint="First Name"
+        android:layout_marginTop="7dp"
+        android:layout_below="@+id/textView3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/pass2EditText"
@@ -116,20 +128,6 @@
         android:scaleType="fitXY"/>
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/errorTextView"
-        android:textAlignment="center"
-        android:textStyle="normal|bold"
-        android:textColor="@android:color/holo_red_dark"
-        android:textSize="20sp"
-        android:layout_below="@+id/registerButton"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="7dp"
-        android:layout_marginEnd="7dp"/>
-
-    <TextView
         android:text="Join Us!"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -138,18 +136,19 @@
         android:textSize="30dp"
         android:textStyle="normal|bold"
         android:textColor="@color/colorPrimaryDark"
-        android:layout_below="@+id/imageView6"
-        android:layout_centerHorizontal="true"/>
+        android:layout_below="@+id/alertTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp"/>
 
-    <EditText
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/firstNameEditText"
-        android:hint="First Name"
-        android:layout_marginTop="7dp"
-        android:layout_below="@+id/textView3"
+        android:id="@+id/errorTextView"
+        android:textAlignment="center"
+        android:textStyle="normal|bold"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="20sp"
+        android:layout_below="@+id/registerButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 
