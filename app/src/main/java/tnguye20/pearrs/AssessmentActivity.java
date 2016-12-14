@@ -214,6 +214,8 @@ public class AssessmentActivity extends AppCompatActivity {
                                 try {
                                     results.put("questions", questionResults);
                                     results.put("totalScore", total);
+                                    Intent intent = new Intent(AssessmentActivity.this, ThankActivity.class);
+                                    AssessmentActivity.this.startActivity(intent);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -231,6 +233,7 @@ public class AssessmentActivity extends AppCompatActivity {
                                 RequestQueue queue = Volley.newRequestQueue(SurveyActivity.this);
                                 queue.add(surveyRequest);
                                 */
+
                             } else {
                                 try {
                                     /* Perform check to see if there is branching logic */

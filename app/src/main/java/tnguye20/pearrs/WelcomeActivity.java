@@ -41,7 +41,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
         displayString = "Welcome " + firstName + " " +lastName + "! Thank you for downloading the PEARRS app. Let's get started!\n";
         displayString += "We have some questions about your health behaviors.\n";
-        displayString += "We will not share yout answers with your doctor unless you ask us to. Please press the button below to proceed.";
+        displayString += "We will not share your answers with your doctor unless you ask us to. Please press the button below to proceed.";
 
         mWelcome = (TextView)findViewById(R.id.welcomeTextView);
         mWelcome.setText(displayString);
